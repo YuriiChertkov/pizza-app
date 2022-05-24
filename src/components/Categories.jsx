@@ -15,10 +15,11 @@ export function Categories() {
   };
 
   return (
-    <div className="categories">
+    <div className='categories'>
       <ul>
         {categories.map((category, key) => (
           <li
+            key={key}
             onClick={() => onClickActive(key)}
             className={active === key ? "active" : ""}
           >
