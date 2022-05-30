@@ -7,8 +7,11 @@ import { Sort } from "../components/Sort";
 export const Home = ({ searchValue }) => {
   const [pizzasItems, setPizzasItems] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
+  const [category, setCategory] = React.useState(0);
+  const [sortType, setSortType] = React.useState(0);
   React.useEffect(() => {
-    fetch("https://628e0b22368687f3e70f5438.mockapi.io/items")
+    setIsLoading(true);
+    fetch("https://628e0b22368687f3e70f5438.mockapi.io/items?category="+ category)
       .then((response) => {
         return response.json();
       })
@@ -17,7 +20,7 @@ export const Home = ({ searchValue }) => {
         setIsLoading(false);
       });
     window.scrollTo(0, 0);
-  }, []);
+  }, [category, sortType]);
 
   const pizzas = pizzasItems
     .filter((obj) => {
@@ -31,8 +34,8 @@ export const Home = ({ searchValue }) => {
   return (
     <div className="container">
       <div className="content__top">
-        <Categories />
-        <Sort />
+        <Categories value={category} onClickCategory={(key) => setCategory(key)}/>
+        <Sort value={sortType} onClickSort={(key) => setSortType(key)} />
       </div>
       <h2 className="content__title">Все пиццы</h2>
       <div className="content__items">{isLoading ? skeleton : pizzas}</div>
