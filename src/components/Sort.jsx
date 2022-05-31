@@ -1,9 +1,15 @@
 import React from "react";
 
-export function Sort({value, onClickSort}) {
+export function Sort({ value, onClickSort }) {
   const [isVisible, setIsVisible] = React.useState(false);
-  const [active, setActive] = React.useState(0);
-  const popupCategory = ["популярности", "цене", "названию (А-Я)"];
+  const popupCategory = [
+    { name: "популярности (возр.)", sortValue: "rating" },
+    { name: "популярности (убыв.)", sortValue: "-rating" },
+    { name: "цене (возр.)", sortValue: "price" },
+    { name: "цене (убыв.)", sortValue: "-price" },
+    { name: "названию (А-Я)", sortValue: "title" },
+    { name: "названию (Я-А)", sortValue: "-title" },
+  ];
   const onClickSetActive = (i) => {
     onClickSort(i);
     setIsVisible(false);
@@ -25,7 +31,7 @@ export function Sort({value, onClickSort}) {
         </svg>
         <b>Сортировка по:</b>
         <span onClick={() => setIsVisible(!isVisible)}>
-          {popupCategory[active]}
+          {value.name}
         </span>
       </div>
       {isVisible && (
@@ -34,10 +40,10 @@ export function Sort({value, onClickSort}) {
             {popupCategory.map((category, key) => (
               <li
                 key={key}
-                onClick={() => onClickSetActive(key)}
-                className={value === key ? "active" : ""}
+                onClick={() => onClickSetActive(category)}
+                className={value.sortValue === category.sortValue? "active" : ""}
               >
-                {category}
+                {category.name}
               </li>
             ))}
           </ul>
