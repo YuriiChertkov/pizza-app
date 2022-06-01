@@ -9,6 +9,7 @@ export const Home = ({ searchValue }) => {
   const [pizzasItems, setPizzasItems] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
   const [category, setCategory] = React.useState(0);
+  const [currentPage, setCurrentPage] = React.useState(1);
   const [sortType, setSortType] = React.useState({
     name: "популярности",
     sortValue: "rating",
@@ -22,7 +23,9 @@ export const Home = ({ searchValue }) => {
 
     setIsLoading(true);
     fetch(
-      `https://628e0b22368687f3e70f5438.mockapi.io/items?${categoryAllProperty}&sortBy=${sortProperty}&order=${orderProperty}${search}`
+      `https://628e0b22368687f3e70f5438.mockapi.io/items?page=${currentPage}
+      &limit=4&${categoryAllProperty}
+      &sortBy=${sortProperty}&order=${orderProperty}${search}`
     )
       .then((response) => {
         return response.json();
@@ -32,7 +35,7 @@ export const Home = ({ searchValue }) => {
         setIsLoading(false);
       });
     window.scrollTo(0, 0);
-  }, [category, sortType, searchValue]);
+  }, [category, sortType, searchValue, currentPage]);
 
   const pizzas = pizzasItems
     .filter((obj) => {
@@ -42,7 +45,7 @@ export const Home = ({ searchValue }) => {
       return false;
     })
     .map((obj) => <PizzaBlock key={obj.id} {...obj} />);
-  const skeleton = [...new Array(8)].map((_, i) => <PizzaLoader key={i} />);
+  const skeleton = [...new Array(4)].map((_, i) => <PizzaLoader key={i} />);
   return (
     <div className="container">
       <div className="content__top">
@@ -54,7 +57,7 @@ export const Home = ({ searchValue }) => {
       </div>
       <h2 className="content__title">Все пиццы</h2>
       <div className="content__items">{isLoading ? skeleton : pizzas}</div>
-      <Pagination />
+      <Pagination onPageChange={(number) => setCurrentPage(number)} />
     </div>
   );
 };
