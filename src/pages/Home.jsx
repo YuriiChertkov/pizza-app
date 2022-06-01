@@ -17,10 +17,11 @@ export const Home = ({ searchValue }) => {
     const sortProperty = sortType.sortValue.replace("-", "");
     const orderProperty = sortType.sortValue.includes("-") ? "desc" : "asc";
     const categoryAllProperty = category > 0 ? `category=${category}` : ``;
+    const search = searchValue ? `&search=${searchValue}` : ``;
 
     setIsLoading(true);
     fetch(
-      `https://628e0b22368687f3e70f5438.mockapi.io/items?${categoryAllProperty}&sortBy=${sortProperty}&order=${orderProperty}`
+      `https://628e0b22368687f3e70f5438.mockapi.io/items?${categoryAllProperty}&sortBy=${sortProperty}&order=${orderProperty}${search}`
     )
       .then((response) => {
         return response.json();
@@ -30,7 +31,7 @@ export const Home = ({ searchValue }) => {
         setIsLoading(false);
       });
     window.scrollTo(0, 0);
-  }, [category, sortType]);
+  }, [category, sortType, searchValue]);
 
   const pizzas = pizzasItems
     .filter((obj) => {
@@ -42,16 +43,16 @@ export const Home = ({ searchValue }) => {
     .map((obj) => <PizzaBlock key={obj.id} {...obj} />);
   const skeleton = [...new Array(8)].map((_, i) => <PizzaLoader key={i} />);
   return (
-    <div className='container'>
-      <div className='content__top'>
+    <div className="container">
+      <div className="content__top">
         <Categories
           value={category}
           onClickCategory={(id) => setCategory(id)}
         />
         <Sort value={sortType} onClickSort={(id) => setSortType(id)} />
       </div>
-      <h2 className='content__title'>Все пиццы</h2>
-      <div className='content__items'>{isLoading ? skeleton : pizzas}</div>
+      <h2 className="content__title">Все пиццы</h2>
+      <div className="content__items">{isLoading ? skeleton : pizzas}</div>
     </div>
   );
 };
