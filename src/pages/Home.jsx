@@ -15,14 +15,12 @@ export const Home = () => {
   const { searchValue } = React.useContext(AppContext);
   const [pizzasItems, setPizzasItems] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
-  //const [category, setCategory] = React.useState(0);
+
   const [currentPage, setCurrentPage] = React.useState(1);
   const [sortType, setSortType] = React.useState({
     name: "популярности",
     sortValue: "rating",
   });
-
-  onClickCategory = (id) => dispatch(setCategoryId(id));
 
   React.useEffect(() => {
     const sortProperty = sortType.sortValue.replace("-", "");
@@ -32,9 +30,7 @@ export const Home = () => {
 
     setIsLoading(true);
     fetch(
-      `https://628e0b22368687f3e70f5438.mockapi.io/items?page=${currentPage}
-      &limit=4&${categoryAllProperty}
-      &sortBy=${sortProperty}&order=${orderProperty}${search}`
+      `https://628e0b22368687f3e70f5438.mockapi.io/items?page=${currentPage}&limit=4&${categoryAllProperty}&sortBy=${sortProperty}&order=${orderProperty}${search}`
     )
       .then((response) => {
         return response.json();
@@ -56,13 +52,16 @@ export const Home = () => {
     .map((obj) => <PizzaBlock key={obj.id} {...obj} />);
   const skeleton = [...new Array(4)].map((_, i) => <PizzaLoader key={i} />);
   return (
-    <div className="container">
-      <div className="content__top">
-        <Categories value={categoryId} onClickCategory={onClickCategory} />
+    <div className='container'>
+      <div className='content__top'>
+        <Categories
+          value={categoryId}
+          onClickCategory={(i) => dispatch(setCategoryId(i))}
+        />
         <Sort value={sortType} onClickSort={(id) => setSortType(id)} />
       </div>
-      <h2 className="content__title">Все пиццы</h2>
-      <div className="content__items">{isLoading ? skeleton : pizzas}</div>
+      <h2 className='content__title'>Все пиццы</h2>
+      <div className='content__items'>{isLoading ? skeleton : pizzas}</div>
       <Pagination onPageChange={(number) => setCurrentPage(number)} />
     </div>
   );
