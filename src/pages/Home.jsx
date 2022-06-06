@@ -10,6 +10,7 @@ import { setCategoryId } from "../redux/slices/filterSlice";
 
 export const Home = () => {
   const categoryId = useSelector((state) => state.filter.categoryId);
+  const sortType = useSelector((state) => state.filter.sort.sortValue);
   const dispatch = useDispatch();
 
   const { searchValue } = React.useContext(AppContext);
@@ -17,14 +18,10 @@ export const Home = () => {
   const [isLoading, setIsLoading] = React.useState(true);
 
   const [currentPage, setCurrentPage] = React.useState(1);
-  const [sortType, setSortType] = React.useState({
-    name: "популярности",
-    sortValue: "rating",
-  });
 
   React.useEffect(() => {
-    const sortProperty = sortType.sortValue.replace("-", "");
-    const orderProperty = sortType.sortValue.includes("-") ? "desc" : "asc";
+    const sortProperty = sortType.replace("-", "");
+    const orderProperty = sortType.includes("-") ? "desc" : "asc";
     const categoryAllProperty = categoryId > 0 ? `category=${categoryId}` : ``;
     const search = searchValue ? `&search=${searchValue}` : ``;
 
@@ -58,7 +55,7 @@ export const Home = () => {
           value={categoryId}
           onClickCategory={(i) => dispatch(setCategoryId(i))}
         />
-        <Sort value={sortType} onClickSort={(id) => setSortType(id)} />
+        <Sort />
       </div>
       <h2 className='content__title'>Все пиццы</h2>
       <div className='content__items'>{isLoading ? skeleton : pizzas}</div>
