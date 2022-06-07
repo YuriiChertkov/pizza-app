@@ -28,18 +28,11 @@ export const Home = () => {
 
     setIsLoading(true);
 
-  /*   fetch(
-      `https://628e0b22368687f3e70f5438.mockapi.io/items?page=${currentPage}&limit=4&${categoryAllProperty}&sortBy=${sortProperty}&order=${orderProperty}${search}`
-    )
+    axios
+      .get(
+        `https://628e0b22368687f3e70f5438.mockapi.io/items?page=${currentPage}&limit=4&${categoryAllProperty}&sortBy=${sortProperty}&order=${orderProperty}${search}`
+      )
       .then((response) => {
-        return response.json();
-      })
-      .then((json) => {
-        setPizzasItems(json);
-        setIsLoading(false);
-      }); */
-      axios.get(`https://628e0b22368687f3e70f5438.mockapi.io/items?page=${currentPage}&limit=4&${categoryAllProperty}&sortBy=${sortProperty}&order=${orderProperty}${search}`)
-      .then(response => {
         setPizzasItems(response.data);
         setIsLoading(false);
       });
