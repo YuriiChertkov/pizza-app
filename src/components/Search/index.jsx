@@ -1,32 +1,30 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
 import debounce from "lodash.debounce";
 import { AppContext } from "../../App";
 import styles from "./Search.module.scss";
 
 export const Search = () => {
-  const { searchValue, setSearchValue } = React.useContext(AppContext);
+  const { setSearchValue } = React.useContext(AppContext);
   const [query, setQuery] = React.useState("");
   const inputElement = React.useRef();
   const onClearSearch = () => {
     setSearchValue("");
+    setQuery("");
     inputElement.current.focus();
   };
 
-  const changeHandler = (event) => {
-    console.log(event);
-    setQuery(event.target.value);
-  };
-
-  /* const debouncedChangeHandler = React.useCallback(
-    debounce(changeHandler, 300),
+  const debouncedChangeHandler = React.useCallback(
+    debounce((str) => {
+      setSearchValue(str);
+    }, 300),
     []
   );
+  const changeHandler = (event) => {
+    setQuery(event.target.value);
+    debouncedChangeHandler(event.target.value);
+  };
 
-  React.useEffect(() => {
-    return () => {
-      debouncedChangeHandler.cancel();
-    };
-  }, []); */
   return (
     <div className={styles.root}>
       <svg
