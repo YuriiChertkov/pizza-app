@@ -2,18 +2,20 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setSort } from "../redux/slices/filterSlice";
 
+export const popupCategory = [
+  { name: "популярности (возр.)", sortValue: "rating" },
+  { name: "популярности (убыв.)", sortValue: "-rating" },
+  { name: "цене (возр.)", sortValue: "price" },
+  { name: "цене (убыв.)", sortValue: "-price" },
+  { name: "названию (А-Я)", sortValue: "title" },
+  { name: "названию (Я-А)", sortValue: "-title" },
+];
+
 export function Sort() {
   const dispatch = useDispatch();
   const sort = useSelector((state) => state.filter.sort);
   const [isVisible, setIsVisible] = React.useState(false);
-  const popupCategory = [
-    { name: "популярности (возр.)", sortValue: "rating" },
-    { name: "популярности (убыв.)", sortValue: "-rating" },
-    { name: "цене (возр.)", sortValue: "price" },
-    { name: "цене (убыв.)", sortValue: "-price" },
-    { name: "названию (А-Я)", sortValue: "title" },
-    { name: "названию (Я-А)", sortValue: "-title" },
-  ];
+
   const onClickSetActive = (obj) => {
     dispatch(setSort(obj));
     setIsVisible(false);
