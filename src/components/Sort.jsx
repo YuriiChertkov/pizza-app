@@ -14,14 +14,23 @@ export const popupCategory = [
 export function Sort() {
   const dispatch = useDispatch();
   const sort = useSelector((state) => state.filter.sort);
+  const sortRef = React.useRef();
   const [isVisible, setIsVisible] = React.useState(false);
 
   const onClickSetActive = (obj) => {
     dispatch(setSort(obj));
     setIsVisible(false);
   };
+
+  React.useEffect(() => {
+    document.addEventListener("click", function (event) {
+      if (!event.path.includes(sortRef.current)) {
+        setIsVisible(false);
+      }
+    });
+  }, []);
   return (
-    <div className='sort'>
+    <div ref={sortRef} className='sort'>
       <div className='sort__label'>
         <svg
           width='10'
