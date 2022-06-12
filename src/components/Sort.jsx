@@ -23,11 +23,17 @@ export function Sort() {
   };
 
   React.useEffect(() => {
-    document.addEventListener("click", function (event) {
+    const handleClickOutside = (event) => {
       if (!event.path.includes(sortRef.current)) {
         setIsVisible(false);
+        console.log("click outside");
       }
-    });
+    };
+    document.body.addEventListener("click", handleClickOutside);
+
+    return () => {
+      document.body.removeEventListener("click", handleClickOutside);
+    };
   }, []);
   return (
     <div ref={sortRef} className='sort'>
