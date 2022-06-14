@@ -37,7 +37,7 @@ export const Home = () => {
   const onChangePage = (page) => {
     dispatch(setCurentPage(page));
   };
-  const fetchPizzas = () => {
+  const fetchPizzas = async () => {
     const sortProperty = sortType.replace("-", "");
     const orderProperty = sortType.includes("-") ? "desc" : "asc";
     const categoryAllProperty = categoryId > 0 ? `category=${categoryId}` : ``;
@@ -45,14 +45,25 @@ export const Home = () => {
 
     setIsLoading(true);
 
-    axios
+    /* await axios
       .get(
         `https://628e0b22368687f3e70f5438.mockapi.io/items?page=${currentPage}&limit=4&${categoryAllProperty}&sortBy=${sortProperty}&order=${orderProperty}${search}`
       )
       .then((response) => {
         setPizzasItems(response.data);
         setIsLoading(false);
-      });
+      }); */
+
+    try {
+      const response = await axios.get(
+        `https://628e0b22368687f3e70f5438.mockapi.io/items?page=${currentPage}&limit=4&${categoryAllProperty}&sortBy=${sortProperty}&order=${orderProperty}${search}`
+      );
+      setPizzasItems(response.data);
+    } catch (error) {
+      alert("Error with fetching pizzasItems");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   React.useEffect(() => {
@@ -105,13 +116,13 @@ export const Home = () => {
   const skeleton = [...new Array(4)].map((_, i) => <PizzaLoader key={i} />);
 
   return (
-    <div className='container'>
-      <div className='content__top'>
+    <div className="container">
+      <div className="content__top">
         <Categories value={categoryId} onClickCategory={onClickCategory} />
         <Sort />
       </div>
-      <h2 className='content__title'>Все пиццы</h2>
-      <div className='content__items'>{isLoading ? skeleton : pizzas}</div>
+      <h2 className="content__title">Все пиццы</h2>
+      <div className="content__items">{isLoading ? skeleton : pizzas}</div>
       <Pagination currentPage={currentPage} onPageChange={onChangePage} />
     </div>
   );
