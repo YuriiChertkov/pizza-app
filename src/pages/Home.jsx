@@ -14,17 +14,18 @@ import {
   setCurentPage,
   setFilters,
 } from "../redux/slices/filterSlice";
+import { setPizzas } from "../redux/slices/pizzasSlice";
 
 export const Home = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isSearch = React.useRef(false);
   const isMounted = React.useRef(false);
+  const pizzasItems = useSelector((state) => state.pizza.items);
   const categoryId = useSelector((state) => state.filter.categoryId);
   const sortType = useSelector((state) => state.filter.sort.sortValue);
   const currentPage = useSelector((state) => state.filter.currentPage);
   const { searchValue } = React.useContext(AppContext);
-  const [pizzasItems, setPizzasItems] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
 
   const onClickCategory = React.useCallback(
@@ -58,7 +59,7 @@ export const Home = () => {
       const response = await axios.get(
         `https://628e0b22368687f3e70f5438.mockapi.io/items?page=${currentPage}&limit=4&${categoryAllProperty}&sortBy=${sortProperty}&order=${orderProperty}${search}`
       );
-      setPizzasItems(response.data);
+      dispatch(setPizzas(response.data));
     } catch (error) {
       alert("Error with fetching pizzasItems");
     } finally {
