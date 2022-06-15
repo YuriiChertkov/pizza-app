@@ -14,14 +14,14 @@ import {
   setCurentPage,
   setFilters,
 } from "../redux/slices/filterSlice";
-import { setPizzas } from "../redux/slices/pizzasSlice";
+import { fetchPizzas } from "../redux/slices/pizzaSlice";
 
 export const Home = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isSearch = React.useRef(false);
   const isMounted = React.useRef(false);
-  const pizzasItems = useSelector((state) => state.pizza.items);
+  const items = useSelector((state) => state.pizza.items);
   const categoryId = useSelector((state) => state.filter.categoryId);
   const sortType = useSelector((state) => state.filter.sort.sortValue);
   const currentPage = useSelector((state) => state.filter.currentPage);
@@ -38,7 +38,7 @@ export const Home = () => {
   const onChangePage = (page) => {
     dispatch(setCurentPage(page));
   };
-  const fetchPizzas = async () => {
+  const getPizzas = async () => {
     const sortProperty = sortType.replace("-", "");
     const orderProperty = sortType.includes("-") ? "desc" : "asc";
     const categoryAllProperty = categoryId > 0 ? `category=${categoryId}` : ``;
@@ -56,10 +56,14 @@ export const Home = () => {
       }); */
 
     try {
-      const response = await axios.get(
-        `https://628e0b22368687f3e70f5438.mockapi.io/items?page=${currentPage}&limit=4&${categoryAllProperty}&sortBy=${sortProperty}&order=${orderProperty}${search}`
+      dispatch(
+        fetchPizzas({
+          sortProperty,
+          orderProperty,
+          categoryAllProperty,
+          search,
+        })
       );
-      dispatch(setPizzas(response.data));
     } catch (error) {
       alert("Error with fetching pizzasItems");
     } finally {
@@ -101,12 +105,12 @@ export const Home = () => {
     window.scrollTo(0, 0);
 
     if (!isSearch.current) {
-      fetchPizzas();
+      getPizzas();
     }
     isSearch.current = false;
   }, [categoryId, sortType, searchValue, currentPage]);
 
-  const pizzas = pizzasItems
+  const pizzas = items
     .filter((obj) => {
       if (obj.title.toLowerCase().includes(searchValue.toLowerCase())) {
         return true;
