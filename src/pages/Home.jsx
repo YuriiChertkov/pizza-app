@@ -1,5 +1,4 @@
 import React from "react";
-import axios from "axios";
 import qs from "qs";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -21,12 +20,11 @@ export const Home = () => {
   const navigate = useNavigate();
   const isSearch = React.useRef(false);
   const isMounted = React.useRef(false);
-  const items = useSelector((state) => state.pizza.items);
+  const { items, status } = useSelector((state) => state.pizza);
   const categoryId = useSelector((state) => state.filter.categoryId);
   const sortType = useSelector((state) => state.filter.sort.sortValue);
   const currentPage = useSelector((state) => state.filter.currentPage);
   const { searchValue } = React.useContext(AppContext);
-  const [isLoading, setIsLoading] = React.useState(true);
 
   const onClickCategory = React.useCallback(
     (i) => {
@@ -44,8 +42,6 @@ export const Home = () => {
     const categoryAllProperty = categoryId > 0 ? `category=${categoryId}` : ``;
     const search = searchValue ? `&search=${searchValue}` : ``;
 
-    setIsLoading(true);
-
     /* await axios
       .get(
         `https://628e0b22368687f3e70f5438.mockapi.io/items?page=${currentPage}&limit=4&${categoryAllProperty}&sortBy=${sortProperty}&order=${orderProperty}${search}`
@@ -55,20 +51,15 @@ export const Home = () => {
         setIsLoading(false);
       }); */
 
-    try {
-      dispatch(
-        fetchPizzas({
-          sortProperty,
-          orderProperty,
-          categoryAllProperty,
-          search,
-        })
-      );
-    } catch (error) {
-      alert("Error with fetching pizzasItems");
-    } finally {
-      setIsLoading(false);
-    }
+    dispatch(
+      fetchPizzas({
+        currentPage,
+        sortProperty,
+        orderProperty,
+        categoryAllProperty,
+        search,
+      })
+    );
   };
 
   React.useEffect(() => {
@@ -127,7 +118,9 @@ export const Home = () => {
         <Sort />
       </div>
       <h2 className="content__title">Все пиццы</h2>
-      <div className="content__items">{isLoading ? skeleton : pizzas}</div>
+      <div className="content__items">
+        {status === "loading" ? skeleton : pizzas}
+      </div>
       <Pagination currentPage={currentPage} onPageChange={onChangePage} />
     </div>
   );
