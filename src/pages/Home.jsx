@@ -1,7 +1,7 @@
-import React from "react";
 import qs from "qs";
-import { useNavigate } from "react-router-dom";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { AppContext } from "../App";
 import { Categories } from "../components/Categories";
 import Pagination from "../components/Pagination";
@@ -13,14 +13,14 @@ import {
   setCurentPage,
   setFilters,
 } from "../redux/slices/filterSlice";
-import { fetchPizzas } from "../redux/slices/pizzaSlice";
+import { fetchPizzas, selectPizzas } from "../redux/slices/pizzaSlice";
 
 export const Home = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isSearch = React.useRef(false);
   const isMounted = React.useRef(false);
-  const { items, status } = useSelector((state) => state.pizza);
+  const { items, status } = useSelector(selectPizzas);
   const categoryId = useSelector((state) => state.filter.categoryId);
   const sortType = useSelector((state) => state.filter.sort.sortValue);
   const currentPage = useSelector((state) => state.filter.currentPage);
@@ -112,13 +112,13 @@ export const Home = () => {
   const skeleton = [...new Array(4)].map((_, i) => <PizzaLoader key={i} />);
 
   return (
-    <div className="container">
-      <div className="content__top">
+    <div className='container'>
+      <div className='content__top'>
         <Categories value={categoryId} onClickCategory={onClickCategory} />
         <Sort />
       </div>
-      <h2 className="content__title">Все пиццы</h2>
-      <div className="content__items">
+      <h2 className='content__title'>Все пиццы</h2>
+      <div className='content__items'>
         {status === "loading" ? skeleton : pizzas}
       </div>
       <Pagination currentPage={currentPage} onPageChange={onChangePage} />
