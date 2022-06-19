@@ -2,13 +2,13 @@ import qs from "qs";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { AppContext } from "../App";
 import { Categories } from "../components/Categories";
 import Pagination from "../components/Pagination";
 import { PizzaBlock } from "../components/PizzaBlock";
 import { PizzaLoader } from "../components/PizzaBlock/Loader";
 import { popupCategory, Sort } from "../components/Sort";
 import {
+  selectFilter,
   setCategoryId,
   setCurentPage,
   setFilters,
@@ -21,10 +21,8 @@ export const Home = () => {
   const isSearch = React.useRef(false);
   const isMounted = React.useRef(false);
   const { items, status } = useSelector(selectPizzas);
-  const categoryId = useSelector((state) => state.filter.categoryId);
+  const { categoryId, currentPage, searchValue } = useSelector(selectFilter);
   const sortType = useSelector((state) => state.filter.sort.sortValue);
-  const currentPage = useSelector((state) => state.filter.currentPage);
-  const { searchValue } = React.useContext(AppContext);
 
   const onClickCategory = React.useCallback(
     (i) => {

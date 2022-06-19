@@ -1,23 +1,23 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import React from "react";
 import debounce from "lodash.debounce";
-import { AppContext } from "../../App";
+import React from "react";
+import { useDispatch } from "react-redux";
+import { setSearchValue } from "../../redux/slices/filterSlice";
 import styles from "./Search.module.scss";
 
 export const Search = () => {
-  const { setSearchValue } = React.useContext(AppContext);
+  const dispatch = useDispatch();
   const [query, setQuery] = React.useState("");
   const inputElement = React.useRef();
   const onClearSearch = () => {
-    setSearchValue("");
+    dispatch(setSearchValue(query));
     setQuery("");
     inputElement.current.focus();
   };
 
   const debouncedChangeHandler = React.useCallback(
     debounce((str) => {
-      setSearchValue(str);
-    }, 300),
+      dispatch(setSearchValue(str));
+    }, 1000),
     []
   );
   const changeHandler = (event) => {
