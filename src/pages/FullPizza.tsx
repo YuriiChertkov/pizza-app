@@ -3,7 +3,11 @@ import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 export const FullPizza: React.FC = () => {
-  const [pizza, setPizza] = React.useState();
+  const [pizza, setPizza] = React.useState<{
+    imageUrl: string;
+    title: string;
+    price: number;
+  }>();
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -24,14 +28,14 @@ export const FullPizza: React.FC = () => {
 
   if (!pizza) {
     return (
-      <div className='container'>
+      <div className="container">
         <h2>Загрузка ... </h2>
       </div>
     );
   }
   return (
-    <div className='container'>
-      <img src={pizza.imageUrl} alt='Pizza' />
+    <div className="container">
+      <img src={pizza.imageUrl} alt="Pizza" />
       <h2> {pizza.title}</h2>
       <p>Попробуй эту вкусную пиццу </p>
       <h4>{pizza.price} ₽</h4>
