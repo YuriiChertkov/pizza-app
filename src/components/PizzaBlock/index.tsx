@@ -8,14 +8,30 @@ import {
 
 const typeNames = ["тонкое", "традиционное"];
 
-export const PizzaBlock = ({ id, title, price, imageUrl, types, sizes }) => {
+interface PizzaBlockProps {
+  id: string;
+  title: string;
+  price: number;
+  imageUrl: string;
+  types: number[];
+  sizes: number[];
+}
+
+export const PizzaBlock: React.FC<PizzaBlockProps> = ({
+  id,
+  title,
+  price,
+  imageUrl,
+  types,
+  sizes,
+}) => {
   const countCartItem = useSelector(selectCartItemById(id));
-  const addedCount = countCartItem ? countCartItem.count : 0;
   const dispatch = useDispatch();
   const [type, setType] = useState(0);
   const [size, setSize] = useState(0);
+  const addedCount = countCartItem ? countCartItem.count : 0;
 
-  const onClickSetActive = (i) => setType(i);
+  const onClickSetActive = (i: number) => setType(i);
 
   const onClickAdd = () => {
     const items = {

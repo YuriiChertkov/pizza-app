@@ -2,7 +2,12 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { selectSort, setSort } from "../redux/slices/filterSlice";
 
-export const popupCategory = [
+type PopupCategory = {
+  name: string;
+  sortValue: string;
+};
+
+export const popupCategory: PopupCategory[] = [
   { name: "популярности (возр.)", sortValue: "rating" },
   { name: "популярности (убыв.)", sortValue: "-rating" },
   { name: "цене (возр.)", sortValue: "price" },
@@ -14,19 +19,18 @@ export const popupCategory = [
 export function Sort() {
   const dispatch = useDispatch();
   const sort = useSelector(selectSort);
-  const sortRef = React.useRef();
+  const sortRef = React.useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = React.useState(false);
 
-  const onClickSetActive = (obj) => {
+  const onClickSetActive = (obj: PopupCategory) => {
     dispatch(setSort(obj));
     setIsVisible(false);
   };
 
   React.useEffect(() => {
-    const handleClickOutside = (event) => {
+    const handleClickOutside = (event: any) => {
       if (!event.path.includes(sortRef.current)) {
         setIsVisible(false);
-        console.log("click outside");
       }
     };
     document.body.addEventListener("click", handleClickOutside);
