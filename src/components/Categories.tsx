@@ -2,7 +2,7 @@ import React from "react";
 
 type CategotiesProps = {
   value: number;
-  onClickCategory: any;
+  onClickCategory: (value: number) => void;
 };
 
 export const Categories: React.FC<CategotiesProps> = ({
