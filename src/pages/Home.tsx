@@ -1,6 +1,6 @@
 import qs from "qs";
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Categories } from "../components/Categories";
 import Pagination from "../components/Pagination";
@@ -14,9 +14,10 @@ import {
   setFilters,
 } from "../redux/slices/filterSlice";
 import { fetchPizzas, selectPizzas } from "../redux/slices/pizzaSlice";
+import { useAppDispatch } from "../redux/store";
 
 export const Home: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const isSearch = React.useRef(false);
   const isMounted = React.useRef(false);
@@ -50,7 +51,6 @@ export const Home: React.FC = () => {
       }); */
 
     dispatch(
-      // @ts-ignore
       fetchPizzas({
         currentPage,
         sortProperty,
@@ -111,13 +111,13 @@ export const Home: React.FC = () => {
   const skeleton = [...new Array(4)].map((_, i) => <PizzaLoader key={i} />);
 
   return (
-    <div className='container'>
-      <div className='content__top'>
+    <div className="container">
+      <div className="content__top">
         <Categories value={categoryId} onClickCategory={onClickCategory} />
         <Sort />
       </div>
-      <h2 className='content__title'>Все пиццы</h2>
-      <div className='content__items'>
+      <h2 className="content__title">Все пиццы</h2>
+      <div className="content__items">
         {status === "loading" ? skeleton : pizzas}
       </div>
       <Pagination currentPage={currentPage} onPageChange={onChangePage} />
