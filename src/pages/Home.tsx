@@ -13,7 +13,11 @@ import {
   setCurentPage,
   setFilters,
 } from "../redux/slices/filterSlice";
-import { fetchPizzas, selectPizzas } from "../redux/slices/pizzaSlice";
+import {
+  fetchPizzas,
+  SearchPizzaParams,
+  selectPizzas,
+} from "../redux/slices/pizzaSlice";
 import { useAppDispatch } from "../redux/store";
 
 export const Home: React.FC = () => {
@@ -41,18 +45,9 @@ export const Home: React.FC = () => {
     const categoryAllProperty = categoryId > 0 ? `category=${categoryId}` : ``;
     const search = searchValue ? `&search=${searchValue}` : ``;
 
-    /* await axios
-      .get(
-        `https://628e0b22368687f3e70f5438.mockapi.io/items?page=${currentPage}&limit=4&${categoryAllProperty}&sortBy=${sortProperty}&order=${orderProperty}${search}`
-      )
-      .then((response) => {
-        setPizzasItems(response.data);
-        setIsLoading(false);
-      }); */
-
     dispatch(
       fetchPizzas({
-        currentPage,
+        currentPage: String(currentPage),
         sortProperty,
         orderProperty,
         categoryAllProperty,
@@ -76,9 +71,11 @@ export const Home: React.FC = () => {
 
   React.useEffect(() => {
     if (window.location.search) {
-      const urlParams = qs.parse(window.location.search.substring(1));
+      const urlParams = qs.parse(
+        window.location.search.substring(1)
+      ) as unknown as SearchPizzaParams;
       const sort = popupCategory.find(
-        (obj) => obj.sortValue === urlParams.sortType
+        (obj) => obj.sortValue === urlParams.sortProperty
       );
 
       dispatch(
@@ -111,13 +108,13 @@ export const Home: React.FC = () => {
   const skeleton = [...new Array(4)].map((_, i) => <PizzaLoader key={i} />);
 
   return (
-    <div className="container">
-      <div className="content__top">
+    <div className='container'>
+      <div className='content__top'>
         <Categories value={categoryId} onClickCategory={onClickCategory} />
         <Sort />
       </div>
-      <h2 className="content__title">Все пиццы</h2>
-      <div className="content__items">
+      <h2 className='content__title'>Все пиццы</h2>
+      <div className='content__items'>
         {status === "loading" ? skeleton : pizzas}
       </div>
       <Pagination currentPage={currentPage} onPageChange={onChangePage} />
