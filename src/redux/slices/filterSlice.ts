@@ -9,16 +9,16 @@ export enum sortPropertyEnum {
   TITLE_DESC = "title",
   TITLE_ASC = "-title",
 }
-export type SortItem = {
+export type Sort = {
   name: string;
   sortValue: sortPropertyEnum;
 };
 
-interface FilterSliceState {
+export interface FilterSliceState {
   searchValue: string;
   categoryId: number;
   currentPage: number;
-  sort: SortItem;
+  sort: Sort;
 }
 
 const initialState: FilterSliceState = {
@@ -27,7 +27,7 @@ const initialState: FilterSliceState = {
   currentPage: 1,
   sort: {
     name: "популярности",
-    sortValue: sortPropertyEnum.PRICE_DESC,
+    sortValue: sortPropertyEnum.RATING_DESC,
   },
 };
 
@@ -41,16 +41,24 @@ export const filterSlice = createSlice({
     setSearchValue: (state, action: PayloadAction<string>) => {
       state.searchValue = action.payload;
     },
-    setSort: (state, action: PayloadAction<SortItem>) => {
+    setSort: (state, action: PayloadAction<Sort>) => {
       state.sort = action.payload;
     },
     setCurentPage: (state, action: PayloadAction<number>) => {
       state.currentPage = action.payload;
     },
+
     setFilters: (state, action: PayloadAction<FilterSliceState>) => {
-      state.currentPage = Number(action.payload.currentPage);
-      state.sort = action.payload.sort;
-      state.categoryId = Number(action.payload.categoryId);
+      if (Object.keys(action.payload).length) {
+        state.currentPage = Number(action.payload.currentPage);
+        state.sort = action.payload.sort;
+        state.categoryId = Number(action.payload.categoryId);
+      } else state.currentPage = 1;
+      state.categoryId = 0;
+      state.sort = {
+        name: "популярности",
+        sortValue: sortPropertyEnum.RATING_DESC,
+      };
     },
   },
 });

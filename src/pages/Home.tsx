@@ -18,7 +18,7 @@ import {
   SearchPizzaParams,
   selectPizzas,
 } from "../redux/slices/pizzaSlice";
-import { useAppDispatch } from "../redux/store";
+import { RootState, useAppDispatch } from "../redux/store";
 
 export const Home: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -27,7 +27,9 @@ export const Home: React.FC = () => {
   const isMounted = React.useRef(false);
   const { items, status } = useSelector(selectPizzas);
   const { categoryId, currentPage, searchValue } = useSelector(selectFilter);
-  const sortType = useSelector((state: any) => state.filter.sort.sortValue);
+  const sortType = useSelector(
+    (state: RootState) => state.filter.sort.sortValue
+  );
 
   const onClickCategory = React.useCallback(
     (i: number) => {
@@ -80,8 +82,11 @@ export const Home: React.FC = () => {
 
       dispatch(
         setFilters({
-          ...urlParams,
-          sort,
+          //...urlParams,
+          searchValue: urlParams.search,
+          categoryId: Number(urlParams.categoryAllProperty),
+          currentPage: Number(urlParams.currentPage),
+          sort: sort || popupCategory[0],
         })
       );
       isSearch.current = true;

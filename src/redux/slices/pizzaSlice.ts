@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { RootState } from "../store";
+import { Sort } from "./filterSlice";
 
 export type SearchPizzaParams = {
   currentPage: string;
@@ -10,10 +11,10 @@ export type SearchPizzaParams = {
   search: string;
 };
 
-export const fetchPizzas = createAsyncThunk(
+export const fetchPizzas = createAsyncThunk<Pizza[], SearchPizzaParams>(
   "pizza/fetchPizzasStatus",
 
-  async (params: SearchPizzaParams) => {
+  async (params) => {
     const {
       currentPage,
       categoryAllProperty,
@@ -25,7 +26,7 @@ export const fetchPizzas = createAsyncThunk(
       `https://628e0b22368687f3e70f5438.mockapi.io/items?page=${currentPage}&limit=4&${categoryAllProperty}&sortBy=${sortProperty}&order=${orderProperty}${search}`
     );
 
-    return data as Pizza[];
+    return data;
   }
 );
 
@@ -83,7 +84,8 @@ export const pizzaSlice = createSlice({
       console.log("error");
     });
   },
-  /* extraReducers: {
+  /* For JS  
+   extraReducers: {
     [fetchPizzas.pending]: (state) => {
       state.status = "loading";
       state.items = [];
