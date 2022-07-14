@@ -219,6 +219,28 @@ body {
             display: none;
           }
         }
+
+        &--disabled {
+          opacity: 0.2;
+          border-color: rgb(134, 134, 134);
+
+
+          &:active {
+            transform: none;
+          }
+
+          &:hover {
+            background-color: transparent;
+
+            svg path {
+              fill: rgb(134, 134, 134);
+            }
+          }
+
+          svg path {
+            fill: rgb(134, 134, 134);
+          }
+        }
       }
 
       b {
