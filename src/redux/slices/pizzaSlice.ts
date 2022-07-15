@@ -69,19 +69,16 @@ export const pizzaSlice = createSlice({
     builder.addCase(fetchPizzas.pending, (state) => {
       state.status = Status.LOADING;
       state.items = [];
-      console.log("pending...");
     });
 
     builder.addCase(fetchPizzas.fulfilled, (state, action) => {
       state.items = action.payload;
       state.status = Status.SUCCESS;
-      console.log(state, "it's OK");
     });
 
     builder.addCase(fetchPizzas.rejected, (state) => {
       state.status = Status.SUCCESS;
       state.items = [];
-      console.log("error");
     });
   },
   /* For JS  

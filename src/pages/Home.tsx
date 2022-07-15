@@ -6,7 +6,7 @@ import { Categories } from "../components/Categories";
 import Pagination from "../components/Pagination";
 import { PizzaBlock } from "../components/PizzaBlock";
 import { PizzaLoader } from "../components/PizzaBlock/Loader";
-import { popupCategory, Sort } from "../components/Sort";
+import { popupCategory, SortPopup } from "../components/Sort";
 import {
   selectFilter,
   setCategoryId,
@@ -26,7 +26,8 @@ export const Home: React.FC = () => {
   const isSearch = React.useRef(false);
   const isMounted = React.useRef(false);
   const { items, status } = useSelector(selectPizzas);
-  const { categoryId, currentPage, searchValue } = useSelector(selectFilter);
+  const { categoryId, sort, currentPage, searchValue } =
+    useSelector(selectFilter);
   const sortType = useSelector(
     (state: RootState) => state.filter.sort.sortValue
   );
@@ -116,7 +117,7 @@ export const Home: React.FC = () => {
     <div className='container'>
       <div className='content__top'>
         <Categories value={categoryId} onClickCategory={onClickCategory} />
-        <Sort />
+        <SortPopup value={sort} />
       </div>
       <h2 className='content__title'>Все пиццы</h2>
       <div className='content__items'>

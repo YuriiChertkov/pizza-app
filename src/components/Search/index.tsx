@@ -10,7 +10,7 @@ export const Search: React.FC = () => {
   const [query, setQuery] = React.useState("");
   const inputElement = React.useRef<HTMLInputElement>(null);
   const onClearSearch = () => {
-    dispatch(setSearchValue(query));
+    dispatch(setSearchValue(""));
     setQuery("");
     inputElement.current?.focus();
   };
