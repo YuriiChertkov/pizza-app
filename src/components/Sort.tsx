@@ -1,7 +1,8 @@
 import React from "react";
 import { useWhyDidYouUpdate } from "ahooks";
 import { useDispatch } from "react-redux";
-import { setSort, Sort, sortPropertyEnum } from "../redux/slices/filterSlice";
+import { Sort, sortPropertyEnum } from "../redux/slices/filter/types";
+import { setSort } from "../redux/slices/filter/slice";
 
 type PopupCategory = {
   name: string;

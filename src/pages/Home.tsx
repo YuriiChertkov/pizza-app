@@ -7,17 +7,16 @@ import Pagination from "../components/Pagination";
 import { PizzaBlock } from "../components/PizzaBlock";
 import { PizzaLoader } from "../components/PizzaBlock/Loader";
 import { popupCategory, SortPopup } from "../components/Sort";
+import { selectFilter } from "../redux/slices/filter/selectors";
 import {
-  selectFilter,
   setCategoryId,
   setCurentPage,
   setFilters,
-} from "../redux/slices/filterSlice";
-import {
-  fetchPizzas,
-  SearchPizzaParams,
-  selectPizzas,
-} from "../redux/slices/pizzaSlice";
+} from "../redux/slices/filter/slice";
+import { selectPizzas } from "../redux/slices/pizza/selectors";
+import { fetchPizzas } from "../redux/slices/pizza/slice";
+import { SearchPizzaParams } from "../redux/slices/pizza/types";
+
 import { RootState, useAppDispatch } from "../redux/store";
 
 export const Home: React.FC = () => {

@@ -5,7 +5,7 @@ import {
   minusItem,
   plusItem,
   removeItemFromCart,
-} from "../redux/slices/cartSlice";
+} from "../redux/slices/cart/slice";
 
 interface CartProps {
   id: string;

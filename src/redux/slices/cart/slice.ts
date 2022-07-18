@@ -1,21 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { getCartFromLocalStorage } from "../../utils/getCartFromLocalStorage";
-import { RootState } from "../store";
-import { calcTotalPriceCart } from "../../utils/calcTotalPriceCart";
-export type CartItem = {
-  id: string;
-  title: string;
-  price: number;
-  imageUrl: string;
-  type: string;
-  size: number;
-  count: number;
-};
-
-interface CartSliceState {
-  totalPrice: number;
-  items: CartItem[];
-}
+import { calcTotalPriceCart } from "../../../utils/calcTotalPriceCart";
+import { getCartFromLocalStorage } from "../../../utils/getCartFromLocalStorage";
+import { CartItem, CartSliceState } from "./types";
 
 const { items, totalPrice } = getCartFromLocalStorage();
 
@@ -63,10 +49,6 @@ export const cartSlice = createSlice({
     },
   },
 });
-
-export const selectCart = (state: RootState) => state.cart;
-export const selectCartItemById = (id: string) => (state: RootState) =>
-  state.cart.items.find((obj) => obj.id === id);
 
 export const {
   addItemToCart,
