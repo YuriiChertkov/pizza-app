@@ -24,6 +24,7 @@ export const Home: React.FC = () => {
   const navigate = useNavigate();
   const isSearch = React.useRef(false);
   const isMounted = React.useRef(false);
+
   const { items, status } = useSelector(selectPizzas);
   const { categoryId, sort, currentPage, searchValue } =
     useSelector(selectFilter);
