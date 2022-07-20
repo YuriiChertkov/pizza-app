@@ -2,11 +2,14 @@ import qs from "qs";
 import React from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Categories } from "../components/Categories";
-import Pagination from "../components/Pagination";
-import { PizzaBlock } from "../components/PizzaBlock";
-import { PizzaLoader } from "../components/PizzaBlock/Loader";
-import { popupCategory, SortPopup } from "../components/Sort";
+import {
+  Categories,
+  Pagination,
+  PizzaBlock,
+  PizzaLoader,
+  SortPopup,
+} from "../components";
+import { popupCategory } from "../components/Sort";
 import { selectFilter } from "../redux/slices/filter/selectors";
 import {
   setCategoryId,
