@@ -5,14 +5,20 @@ import { Home } from "./pages/Home";
 import "./scss/app.scss";
 
 const Cart = React.lazy(() =>
-  import("./pages/Cart").then(({ Cart }) => ({ default: Cart }))
+  import(/* webpackChunkName: "Cart" */ "./pages/Cart").then(({ Cart }) => ({
+    default: Cart,
+  }))
 );
 
 const FullPizza = React.lazy(() =>
-  import("./pages/FullPizza").then(({ FullPizza }) => ({ default: FullPizza }))
+  import(/* webpackChunkName: "FullPizza" */ "./pages/FullPizza").then(
+    ({ FullPizza }) => ({ default: FullPizza })
+  )
 );
 const NotFound = React.lazy(() =>
-  import("./pages/404").then(({ NotFound }) => ({ default: NotFound }))
+  import(/* webpackChunkName: "NotFound" */ "./pages/404").then(
+    ({ NotFound }) => ({ default: NotFound })
+  )
 );
 function App() {
   return (
