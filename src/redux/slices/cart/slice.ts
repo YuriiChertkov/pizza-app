@@ -32,12 +32,14 @@ export const cartSlice = createSlice({
       if (findItem) {
         findItem.count--;
       }
+      state.totalPrice = calcTotalPriceCart(state.items);
     },
     plusItem: (state, action: PayloadAction<string>) => {
       const findItem = state.items.find((obj) => obj.id === action.payload);
       if (findItem) {
         findItem.count++;
       }
+      state.totalPrice = calcTotalPriceCart(state.items);
     },
 
     removeItemFromCart: (state, action: PayloadAction<string>) => {
