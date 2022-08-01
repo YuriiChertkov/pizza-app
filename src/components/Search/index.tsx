@@ -1,7 +1,7 @@
 import debounce from "lodash.debounce";
 import React from "react";
 import { useDispatch } from "react-redux";
-import { setSearchValue } from "../../redux/slices/filterSlice";
+import { setSearchValue } from "../../redux/slices/filter/slice";
 
 import styles from "./Search.module.scss";
 
@@ -10,7 +10,7 @@ export const Search: React.FC = () => {
   const [query, setQuery] = React.useState("");
   const inputElement = React.useRef<HTMLInputElement>(null);
   const onClearSearch = () => {
-    dispatch(setSearchValue(query));
+    dispatch(setSearchValue(""));
     setQuery("");
     inputElement.current?.focus();
   };

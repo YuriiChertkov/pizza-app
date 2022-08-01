@@ -2,32 +2,38 @@ import qs from "qs";
 import React from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Categories } from "../components/Categories";
-import Pagination from "../components/Pagination";
-import { PizzaBlock } from "../components/PizzaBlock";
-import { PizzaLoader } from "../components/PizzaBlock/Loader";
-import { popupCategory, Sort } from "../components/Sort";
 import {
-  selectFilter,
+  Categories,
+  Pagination,
+  PizzaBlock,
+  PizzaLoader,
+  SortPopup,
+} from "../components";
+import { popupCategory } from "../components/Sort";
+import { selectFilter } from "../redux/slices/filter/selectors";
+import {
   setCategoryId,
   setCurentPage,
   setFilters,
-} from "../redux/slices/filterSlice";
-import {
-  fetchPizzas,
-  SearchPizzaParams,
-  selectPizzas,
-} from "../redux/slices/pizzaSlice";
-import { useAppDispatch } from "../redux/store";
+} from "../redux/slices/filter/slice";
+import { selectPizzas } from "../redux/slices/pizza/selectors";
+import { fetchPizzas } from "../redux/slices/pizza/slice";
+import { SearchPizzaParams } from "../redux/slices/pizza/types";
+
+import { RootState, useAppDispatch } from "../redux/store";
 
 export const Home: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const isSearch = React.useRef(false);
   const isMounted = React.useRef(false);
+
   const { items, status } = useSelector(selectPizzas);
-  const { categoryId, currentPage, searchValue } = useSelector(selectFilter);
-  const sortType = useSelector((state: any) => state.filter.sort.sortValue);
+  const { categoryId, sort, currentPage, searchValue } =
+    useSelector(selectFilter);
+  const sortType = useSelector(
+    (state: RootState) => state.filter.sort.sortValue
+  );
 
   const onClickCategory = React.useCallback(
     (i: number) => {
@@ -80,8 +86,11 @@ export const Home: React.FC = () => {
 
       dispatch(
         setFilters({
-          ...urlParams,
-          sort,
+          //...urlParams,
+          searchValue: urlParams.search,
+          categoryId: Number(urlParams.categoryAllProperty),
+          currentPage: Number(urlParams.currentPage),
+          sort: sort || popupCategory[0],
         })
       );
       isSearch.current = true;
@@ -111,7 +120,7 @@ export const Home: React.FC = () => {
     <div className="container">
       <div className="content__top">
         <Categories value={categoryId} onClickCategory={onClickCategory} />
-        <Sort />
+        <SortPopup value={sort} />
       </div>
       <h2 className="content__title">Все пиццы</h2>
       <div className="content__items">
