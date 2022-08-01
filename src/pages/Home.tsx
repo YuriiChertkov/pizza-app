@@ -108,13 +108,13 @@ export const Home: React.FC = () => {
   const skeleton = [...new Array(4)].map((_, i) => <PizzaLoader key={i} />);
 
   return (
-    <div className='container'>
-      <div className='content__top'>
+    <div className="container">
+      <div className="content__top">
         <Categories value={categoryId} onClickCategory={onClickCategory} />
         <Sort />
       </div>
-      <h2 className='content__title'>Все пиццы</h2>
-      <div className='content__items'>
+      <h2 className="content__title">Все пиццы</h2>
+      <div className="content__items">
         {status === "loading" ? skeleton : pizzas}
       </div>
       <Pagination currentPage={currentPage} onPageChange={onChangePage} />
